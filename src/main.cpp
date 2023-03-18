@@ -1,12 +1,16 @@
-#include <iostream>
-#include <reg.h>
+#include <cstdio>
+#include <mem.h>
 using namespace std;
 
 int main(){
-    char buf[8] = {0};
-    Reg r(8,buf);
-    r.write(10);
-    printf("%lld\n",r.read());
+    char str[] = "Hello Memory!";
+    long long str_len = sizeof(str)/sizeof(char);
+    Memory mem(1);
+    mem.write_any(0,str,str_len);
+    for (long long i=0;i<str_len;i++){
+        printf("%c",mem.read_byte(i));
+    }
+    printf("\n");
     return 0;
 }
 
