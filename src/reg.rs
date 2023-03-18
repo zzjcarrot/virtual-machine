@@ -4,7 +4,9 @@ pub struct Reg<'a>{
 }
 
 impl Reg<'_> {
-    pub fn new(data:&'_ mut [u8], size:usize) -> Reg{
+    pub fn new(data:&'_ [u8], size:usize) -> Reg{
+        let data = data as *const [u8] as *mut [u8];
+        let data = unsafe{&mut (*data)};
         Reg{data, size}
     }
 
