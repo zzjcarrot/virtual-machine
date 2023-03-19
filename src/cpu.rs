@@ -2,6 +2,7 @@ use crate::reg::Reg;
 
 const CPU_BITS:usize = 64;
 
+#[derive(Debug)]
 pub struct CPU<'a> {
     al:Reg<'a>,ah:Reg<'a>,bl:Reg<'a>,bh:Reg<'a>,
     cl:Reg<'a>,ch:Reg<'a>,dl:Reg<'a>,dh:Reg<'a>,
@@ -37,5 +38,8 @@ impl CPU<'_> {
             rsp:Reg::new(&(BUFFER[48..56]),8),
             rip:Reg::new(&(BUFFER[56..64]),8),
         }
+    }
+    pub fn to_string(&self) -> String {
+        format!("{:?}",self)
     }
 }

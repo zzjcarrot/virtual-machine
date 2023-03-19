@@ -1,3 +1,4 @@
+#[derive(Debug)]
 pub struct Instruction {
     codes:[u8;4]
 }
@@ -20,6 +21,9 @@ impl Instruction
     }
     pub fn get_op2(&self) -> u8 {
         self.codes[3]
+    }
+    pub fn to_string(&self) -> String {
+        format!("{:?}",self)
     }
 }
 

@@ -1,3 +1,4 @@
+#[derive(Debug)]
 pub struct Reg<'a>{
     data:&'a mut [u8],
     size:usize,

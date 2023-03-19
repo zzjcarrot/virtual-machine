@@ -12,10 +12,10 @@ pub struct Memory{
 }
 
 impl Memory{
-    pub fn new(size:usize) -> Self {
+    pub fn new(size:usize) -> Self {    //size以MB为单位
         Self {
-            buffer:alloc_vec(size*1024),
-            size:size*1024,
+            buffer:alloc_vec(size*1024*1024),
+            size:size*1024*1024,
         }
     }
     pub fn write_u8(&mut self,addr:usize, bytes:u8) {
