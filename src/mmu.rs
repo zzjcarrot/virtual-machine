@@ -59,7 +59,7 @@ impl MMU {
         let page_no = addr / 1024 / 1024;
         let page_to = addr % 1024;
         let page = self.page_dir.pages[page_no];
-        page.to + page_to
+        page.to*1024*1024 + page_to
     }
     fn get_addr(&self, addr: usize) -> usize {
         match self.mode {
