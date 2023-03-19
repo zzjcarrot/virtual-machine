@@ -1,0 +1,3 @@
+[alias]
+compile = "build --release"
+crun = "run --release"
