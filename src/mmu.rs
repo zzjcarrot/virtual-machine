@@ -48,9 +48,12 @@ impl MMU {
     pub fn new(mem_size: usize) -> Self {
         Self {
             mode: MMUMode::None,
-            page_dir: PageDir::new(mem_size / 1024 / 1024),
+            page_dir: PageDir::new(mem_size),
             memory: Memory::new(mem_size),
         }
+    }
+    pub fn set_mode(&mut self,mode: MMUMode) {
+        self.mode = mode;
     }
     fn virtual2phisycal(&self, addr: usize) -> usize {
         let page_no = addr / 1024 / 1024;
@@ -68,24 +71,60 @@ impl MMU {
         self.memory.read_u8(self.get_addr(addr))
     }
     pub fn read_u16(&mut self, addr: usize) -> u16 {
-        self.memory.read_u16(self.get_addr(addr))
+        let mut i = 0;
+        let mut bytes = 0;
+        while i < 2{
+            bytes <<= 8;
+            bytes += self.read_u8(self.get_addr(addr + i)) as u16;
+            i = i + 1;
+        }
+        bytes
     }
     pub fn read_u32(&mut self, addr: usize) -> u32 {
-        self.memory.read_u32(self.get_addr(addr))
+        let mut i = 0;
+        let mut bytes = 0;
+        while i < 4{
+            bytes <<= 8;
+            bytes += self.read_u8(self.get_addr(addr + i)) as u32;
+            i = i + 1;
+        }
+        bytes
     }
     pub fn read_u64(&mut self, addr: usize) -> u64 {
-        self.memory.read_u64(self.get_addr(addr))
+        let mut i = 0;
+        let mut bytes = 0;
+        while i < 8{
+            bytes <<= 8;
+            bytes += self.read_u8(self.get_addr(addr + i)) as u64;
+            i = i + 1;
+        }
+        bytes
     }
     pub fn write_u8(&mut self, addr: usize, value: u8) {
         self.memory.write_u8(self.get_addr(addr), value);
     }
     pub fn write_u16(&mut self, addr: usize, value: u16) {
-        self.memory.write_u16(self.get_addr(addr), value);
+        const SIZE:usize = 2;
+        let mut i = 0;
+        while i < SIZE{
+            self.write_u8(addr+SIZE-i-1,(value >> (i*8)) as u8);
+            i += 1;
+        }
     }
     pub fn write_u32(&mut self, addr: usize, value: u32) {
-        self.memory.write_u32(self.get_addr(addr), value);
+        const SIZE:usize = 4;
+        let mut i = 0;
+        while i < SIZE{
+            self.write_u8(addr+SIZE-i-1,(value >> (i*8)) as u8);
+            i += 1;
+        }
     }
     pub fn write_u64(&mut self, addr: usize, value: u64) {
-        self.memory.write_u64(self.get_addr(addr), value);
+        const SIZE:usize = 8;
+        let mut i = 0;
+        while i < SIZE{
+            self.write_u8(addr+SIZE-i-1,(value >> (i*8)) as u8);
+            i += 1;
+        }
     }
 }
